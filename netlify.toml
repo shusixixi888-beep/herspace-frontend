@@ -1,0 +1,22 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# SPA 回退：所有非静态文件请求都回退到 index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = { }
+
+# API 代理：将 /api/* 请求转发到后端
+# 部署后在 Netlify 后台设置环境变量 BACKEND_URL = https://your-backend-url
+[[redirects]]
+  from = "/api/*"
+  to = "${BACKEND_URL}/api/:splat"
+  status = 200
+  force = true
